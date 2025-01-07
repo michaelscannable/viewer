@@ -1,29 +1,33 @@
 import type { CustomCellRendererProps } from 'ag-grid-react'
 import { type FunctionComponent, useState } from 'react'
 
-import styles from './ProductCellRenderer.module.css'
-
-const PLACEHOLDER_IMAGE =
-  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f0f0f0'/%3E%3Ctext x='50' y='50' font-family='Arial' font-size='14' fill='%23999' text-anchor='middle' dy='.3em'%3ENo Image%3C/text%3E%3C/svg%3E"
-
 export const ProductCellRenderer: FunctionComponent<CustomCellRendererProps> = ({
   value,
-  data: { image, category }
+  data: { image, product_group_name }
 }) => {
   const [imgSrc, setImgSrc] = useState(`../../assets/${image}.png`)
 
   const handleImageError = () => {
-    setImgSrc(PLACEHOLDER_IMAGE)
+    // random image between 1 and 10
+    const randomImage = Math.floor(Math.random() * 20) + 1
+    setImgSrc(`https://prd.place/400/?id=${randomImage}`)
   }
 
   return (
-    <div className={styles.productCell}>
-      <div className={styles.image}>
-        <img src={imgSrc} alt={value} onError={handleImageError} />
+    <div className="h-full flex flex-row items-center justify-center">
+      <div className="max-w-full max-h-[100px] bg-[rgba(201,201,201,0.2)] rounded-lg m-2">
+        <img
+          src={imgSrc}
+          alt={value}
+          onError={handleImageError}
+          className="w-[60px] h-[60px] rounded-lg"
+        />
       </div>
       <div>
-        <div>{value}</div>
-        <div className={styles.stockCell}>{category}</div>
+        <div className="font-medium leading-normal">{value}</div>
+        <div className="mt-1 text-xs bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)] w-fit border border-[#c0c0c057] rounded-md py-0.5 px-1">
+          {product_group_name}
+        </div>
       </div>
     </div>
   )
