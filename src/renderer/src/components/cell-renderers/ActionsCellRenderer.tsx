@@ -1,7 +1,6 @@
 import type { CustomCellRendererProps } from 'ag-grid-react'
 import { type FunctionComponent, useCallback } from 'react'
-import deleteIcon from '../../assets/delete.svg'
-import styles from './ActionsCellRenderer.module.css'
+import { Trash2 } from 'lucide-react'
 
 export const ActionsCellRenderer: FunctionComponent<CustomCellRendererProps> = ({ api, node }) => {
   const onRemoveClick = useCallback(() => {
@@ -9,30 +8,14 @@ export const ActionsCellRenderer: FunctionComponent<CustomCellRendererProps> = (
     api.applyTransaction({ remove: [rowData] })
   }, [node, api])
 
-  // const onStopSellingClick = useCallback(() => {
-  //   const rowData = node.data
-
-  //   const isPaused = rowData.status === 'paused'
-  //   const isOutOfStock = rowData.available <= 0
-
-  //   // Modify the status property
-  //   rowData.status = !isPaused ? 'paused' : !isOutOfStock ? 'active' : 'outOfStock'
-
-  //   // Refresh the row to reflect the changes
-  //   api.applyTransaction({ update: [rowData] })
-  // }, [node, api])
-
   return (
-    <div className={styles.buttonCell}>
-      <button className={`button-secondary ${styles.removeButton}`} onClick={onRemoveClick}>
-        <img src={deleteIcon} alt="delete" />
-      </button>
-      {/* <button
-        className={`button-secondary ${styles.buttonStopSelling}`}
-        onClick={onStopSellingClick}
+    <div className="flex gap-2 flex-row-reverse items-center h-full">
+      <button
+        className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-[--ag-border-color] bg-[--ag-background-color] text-[--color-fg-primary] shadow-sm hover:bg-gray-50"
+        onClick={onRemoveClick}
       >
-        Hold Selling
-      </button> */}
+        <Trash2 className="h-5 w-5" />
+      </button>
     </div>
   )
 }

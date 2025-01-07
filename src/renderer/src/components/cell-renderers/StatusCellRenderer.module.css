@@ -1,13 +1,25 @@
 .tag {
   border-radius: 100px;
-  padding-left: 4px;
-  padding-right: 12px;
-  line-height: 2;
-  font-weight: 500;
-  border: 1.5px solid rgba(91, 91, 91, 0.1);
+  padding: 4px;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: fit-content;
+}
+
+.PUBLISHEDTag {
+  background-color: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.UNPUBLISHEDTag {
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.ARCHIVEDTag {
+  background-color: rgba(75, 85, 99, 0.1);
+  border: 1px solid rgba(75, 85, 99, 0.2);
 }
 
 .activeTag {

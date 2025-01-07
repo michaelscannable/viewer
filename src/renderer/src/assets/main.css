@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:global(:root) {
+    --layout-grid-header-height: 32px;
+}
+
+
+@layer base {
+  html, body {
+    @apply h-full w-full;
+  }
+}
