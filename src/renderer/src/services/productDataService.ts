@@ -2,6 +2,7 @@ import { ColDef, ValueFormatterFunc, ColGroupDef } from 'ag-grid-community'
 import { ActionsCellRenderer } from '../components/cell-renderers/ActionsCellRenderer'
 import { ProductCellRenderer } from '../components/cell-renderers/ProductCellRenderer'
 import { StatusCellRenderer } from '../components/cell-renderers/StatusCellRenderer'
+import { getGroupValuesAsync } from './productServerService'
 
 export const statuses = {
   ALL: 'All',
@@ -120,6 +121,7 @@ export const getBaseColumnDefs = (): (ColDef | ColGroupDef)[] => [
         cellRenderer: StatusCellRenderer,
         filter: true,
         filterParams: {
+          values: Object.keys(statuses),
           valueFormatter: statusFormatter
         },
         headerClass: 'header-status',
@@ -147,7 +149,11 @@ export const getBaseColumnDefs = (): (ColDef | ColGroupDef)[] => [
       },
       {
         field: 'product_group_name',
-        headerName: 'Group'
+        headerName: 'Group',
+        filter: true,
+        filterParams: {
+          values: getGroupValuesAsync
+        }
       },
       {
         field: 'code',
@@ -161,7 +167,7 @@ export const getBaseColumnDefs = (): (ColDef | ColGroupDef)[] => [
     field: 'actions',
     // headerName: '',
     cellRenderer: ActionsCellRenderer,
-    minWidth: 80,
+    minWidth: 90,
     filter: false,
     suppressMovable: true,
     pinned: 'right',

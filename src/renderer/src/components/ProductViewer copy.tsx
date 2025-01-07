@@ -1,24 +1,19 @@
 import { type FunctionComponent, useCallback, useMemo, useRef, useState } from 'react'
 import { AgGridReact } from 'ag-grid-react'
-import {
-  type SizeColumnsToFitGridStrategy,
-  ColDef,
-  ColGroupDef,
-  GridReadyEvent
-} from 'ag-grid-community'
+import { type SizeColumnsToFitGridStrategy, ColDef, ColGroupDef } from 'ag-grid-community'
 import { getProductData } from './data'
 import {
+  registerAgGridModules,
   defaultColDef,
   sideBarConfig,
   registerAgGridModulesServerSide
 } from '../config/agGridConfig'
 import { getBaseColumnDefs, getProductDataColumns } from '../services/productDataService'
 import { ProductFilterControls } from './ProductFilterControls'
-import { ProductServer, getServerSideDatasource } from '../services/productServerService'
 
 // Register AG-Grid modules
+// registerAgGridModules()
 registerAgGridModulesServerSide()
-
 interface Props {
   gridTheme?: string
   isDarkMode?: boolean
@@ -34,22 +29,10 @@ export const ProductViewer: FunctionComponent<Props> = ({
   const [activeTab, setActiveTab] = useState('ALL')
   const [quickFilterText, setQuickFilterText] = useState<string>()
 
-  const onGridReady = useCallback((params: GridReadyEvent) => {
-    // Get initial data for column definitions
-    // const initialData = getProductData().data
-
-    // Setup the fake server with data
-    const productServer = new ProductServer()
-
-    // Create datasource with a reference to the fake server
-    const datasource = getServerSideDatasource(productServer)
-
-    // Register the datasource with the grid
-    params.api.setGridOption('serverSideDatasource', datasource)
-
-    // Size columns to fit
-    params.api.sizeColumnsToFit()
-    params.api.autoSizeAllColumns()
+  const onGridReady = useCallback(() => {
+    gridRef.current!.api.sizeColumnsToFit()
+    gridRef.current!.api.autoSizeAllColumns()
+    console.log('onGridReady')
   }, [])
 
   const handleTabClick = useCallback((status: string) => {
@@ -59,15 +42,11 @@ export const ProductViewer: FunctionComponent<Props> = ({
       .then(() => gridRef.current!.api.onFilterChanged())
   }, [])
 
-  function onFilterChanged() {
-    // TODO: Implement filter logic
-    console.log('onFilterChanged')
-  }
+  const [rowData] = useState(getProductData().data)
 
   const columnDefs = useMemo<(ColDef | ColGroupDef)[]>(() => {
     const baseColumns = getBaseColumnDefs()
-    const initialData = getProductData().data
-    const productDataColumns = getProductDataColumns(initialData)
+    const productDataColumns = getProductDataColumns(rowData)
     return [
       ...baseColumns,
       {
@@ -75,7 +54,7 @@ export const ProductViewer: FunctionComponent<Props> = ({
         children: productDataColumns
       }
     ]
-  }, [])
+  }, [rowData])
 
   const autoSizeStrategy = useMemo<SizeColumnsToFitGridStrategy>(
     () => ({
@@ -101,18 +80,17 @@ export const ProductViewer: FunctionComponent<Props> = ({
             theme="legacy"
             ref={gridRef}
             columnDefs={columnDefs}
+            rowData={rowData}
             defaultColDef={defaultColDef}
+            // domLayout="autoHeight"
             autoSizeStrategy={autoSizeStrategy}
             onGridReady={onGridReady}
-            onGridSizeChanged={(params) => params.api.sizeColumnsToFit()}
+            onGridSizeChanged={onGridReady}
             pagination
             paginationPageSize={10}
             paginationPageSizeSelector={paginationPageSizeSelector}
             quickFilterText={quickFilterText}
             sideBar={sideBarConfig}
-            rowModelType="serverSide"
-            cacheBlockSize={100}
-            maxBlocksInCache={10}
           />
         </div>
       </section>

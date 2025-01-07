@@ -13,13 +13,29 @@ import {
   FiltersToolPanelModule,
   SideBarModule,
   ColumnsToolPanelModule,
-  PinnedRowModule
+  PinnedRowModule,
+  ServerSideRowModelModule
 } from 'ag-grid-enterprise'
 
 export const registerAgGridModules = (): void => {
   ModuleRegistry.registerModules([
     AllCommunityModule,
     ClientSideRowModelModule,
+    ExcelExportModule,
+    SetFilterModule,
+    MultiFilterModule,
+    MasterDetailModule,
+    FiltersToolPanelModule,
+    ColumnsToolPanelModule,
+    PinnedRowModule,
+    SideBarModule
+  ])
+}
+
+export const registerAgGridModulesServerSide = (): void => {
+  ModuleRegistry.registerModules([
+    AllCommunityModule,
+    ServerSideRowModelModule,
     ExcelExportModule,
     SetFilterModule,
     MultiFilterModule,
