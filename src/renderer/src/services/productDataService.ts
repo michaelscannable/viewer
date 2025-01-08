@@ -3,6 +3,7 @@ import { ActionsCellRenderer } from '../components/cell-renderers/ActionsCellRen
 import { ProductCellRenderer } from '../components/cell-renderers/ProductCellRenderer'
 import { StatusCellRenderer } from '../components/cell-renderers/StatusCellRenderer'
 import { getGroupValuesAsync } from './productServerService'
+import { ProductDataType } from '@renderer/domain/common/utils'
 
 export const statuses = {
   ALL: 'All',
@@ -56,6 +57,55 @@ const getFieldTypeConfig = (type: string): Partial<ColDef> => {
       }
   }
 }
+
+// export const getProductDataColumns2 = (data: any[]): ColDef[] => {
+//     if (!data || data.length === 0) return []
+
+//     const allFields = new Map<
+//       string,
+//       ProductDataType
+//     >()
+
+//     data.forEach((row) => {
+//       const productData = row.product_data || []
+//       productData.forEach((field) => {
+//         if (
+//           !allFields.has(field.key) &&
+//           !['image', 'uploads_1', 'web', 'instructions'].includes(field.key)
+//         ) {
+//           allFields.set(field.key, {
+//             key: field.key,
+//             name: field.name,
+//             unit: field.unit,
+//             type: field.type
+//           })
+//         }
+//       })
+//     })
+
+//     return Array.from(allFields.values())
+//       .sort((a, b) => a.name.localeCompare(b.name))
+//       .map((field) => ({
+//         field: field.key,
+//         headerName: field.name,
+//         valueGetter: ({ data }) => getProductDataValue(data, field.key),
+//         valueFormatter: ({ value }) => {
+//           if (!value) return ''
+//           if (field.unit) {
+//             return `${value} ${field.unit}`
+//           }
+//           if (Array.isArray(value)) {
+//             if (value.length === 0) return ''
+//             if (typeof value[0] === 'object' && value[0].value) {
+//               return value.map((v) => v.value).join(', ')
+//             }
+//             return value.join(', ')
+//           }
+//           return value
+//         },
+//         ...getFieldTypeConfig(field.type)
+//       }))
+//   }
 
 export const getProductDataColumns = (data: any[]): ColDef[] => {
   if (!data || data.length === 0) return []

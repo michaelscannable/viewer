@@ -25,6 +25,7 @@
     "@electron-toolkit/utils": "^3.0.0",
     "ag-grid-enterprise": "33.0.2",
     "ag-grid-react": "33.0.2",
+    "effect": "^3.12.1",
     "electron-updater": "^6.1.7",
     "lucide-react": "^0.469.0"
   },
